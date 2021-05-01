@@ -59,7 +59,7 @@ class Command(BaseCommand):
                     ).delete()
 
                     for check in data.get("Checks", []):
-                        check_name = check.get("CheckName").lower().strip()
+                        check_name = check.get("Name").lower().strip()
                         try:
                             metric, _ = Metric.objects.get_or_create(
                                 package=package, key=f"openssf.scorecard.raw.{check_name}"
