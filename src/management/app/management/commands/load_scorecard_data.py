@@ -51,12 +51,33 @@ class Command(BaseCommand):
                     continue
 
                 with transaction.atomic():
-                    date_ = parse(data.get("Date"))
+
                     package, _ = Package.objects.get_or_create(package_url=str(package_url))
 
                     Metric.objects.filter(
                         package=package, key__startswith="openssf.scorecard.raw."
                     ).delete()
+
+                    date_ = parse(data.get("Date"))
+
+                    try:
+                        metric, _ = Metric.objects.get_or_create(
+                            package=package, key=f"openssf.scorecard.raw.date"
+                        )
+                        metric.value = str(date_).split()[0]
+                        metric.properties = {}
+                        metric.save()
+
+                        print(metric)
+                        print(metric.key)
+                        print(metric.value)
+
+                    except Exception as msg:
+                        logging.warning(
+                            "Failed to save data (%s, %s): %s", package_url, "date", msg
+                        )
+
+                    return
 
                     for check in data.get("Checks", []):
                         check_name = check.get("Name").lower().strip()

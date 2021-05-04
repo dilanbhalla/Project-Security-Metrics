@@ -57,8 +57,8 @@ class Command(BaseCommand):
                     ).delete()
 
                     for key, value in row.items():
-                        if key in ["name", "url"]:
-                            continue
+                        # if key in ["name", "url"]:
+                        #     continue
                         try:
                             metric, _ = Metric.objects.get_or_create(
                                 package=package, key=f"openssf.criticality.raw.{key}"
