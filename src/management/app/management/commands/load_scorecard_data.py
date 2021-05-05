@@ -58,40 +58,27 @@ class Command(BaseCommand):
                         package=package, key__startswith="openssf.scorecard.raw."
                     ).delete()
 
-                    date_ = parse(data.get("Date"))
+                    date = str(parse(data.get("Date"))).split()[0]
 
-                    try:
-                        metric, _ = Metric.objects.get_or_create(
-                            package=package, key=f"openssf.scorecard.raw.date"
-                        )
-                        metric.value = str(date_).split()[0]
-                        metric.properties = {}
-                        metric.save()
-
-                        print(metric)
-                        print(metric.key)
-                        print(metric.value)
-
-                    except Exception as msg:
-                        logging.warning(
-                            "Failed to save data (%s, %s): %s", package_url, "date", msg
-                        )
-
-                    return
-
-                    for check in data.get("Checks", []):
-                        check_name = check.get("Name").lower().strip()
+                    def add_metric(value, properties, attribute):
                         try:
                             metric, _ = Metric.objects.get_or_create(
-                                package=package, key=f"openssf.scorecard.raw.{check_name}"
+                                package=package, key=f"openssf.scorecard.raw.{attribute}"
                             )
-                            metric.value = str(check.get("Pass")).lower()
-                            metric.properties = check
+                            metric.value = value
+                            metric.properties = properties
                             metric.save()
                         except Exception as msg:
                             logging.warning(
-                                "Failed to save data (%s, %s): %s", package_url, check_name, msg
+                                "Failed to save data (%s, %s): %s", package_url, attribute, msg
                             )
+
+                    add_metric(date, {}, "date")
+                    for check in data.get("Checks", []):
+                        check_name = check.get("Name").lower().strip()
+                        passed = str(check.get("Pass")).lower()
+                        add_metric(passed, check, check_name)
+
         except Exception as msg:
             traceback.print_exc()
             logging.warn("Error: %s", msg)
