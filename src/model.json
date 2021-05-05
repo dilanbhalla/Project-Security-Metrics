@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620172918179,
+  "iteration": 1620172918185,
   "links": [
     {
       "icon": "cloud",
@@ -1021,6 +1021,89 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "# Dependents",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "rgba(0, 0, 0, 0.5)",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "Monthly",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 21,
+        "y": 11
+      },
+      "id": 71,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "first"
+          ],
+          "fields": "/^value$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "-- FILLER QUERY, SELECTS NOTHING WITH LIMIT STATEMENT SO GRAFANA CAN DEFAULT TO \"Monthly\"\nSELECT m.value\nFROM metric m left join package p on m.package_id = p.id\nWHERE\n  m.key like 'openssf.criticality.raw.last_updated'\n  and\n  p.package_url = '${PackageURL}'\nLIMIT 0",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Recorded",
+      "transparent": true,
       "type": "stat"
     },
     {
@@ -2089,7 +2172,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Achieved At",
+      "title": "Recorded",
       "transparent": true,
       "type": "stat"
     },
@@ -3354,7 +3437,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Achieved At",
+      "title": "Recorded",
       "transparent": true,
       "type": "stat"
     },
@@ -3963,8 +4046,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "pkg:github/curl/curl",
-          "value": "pkg:github/curl/curl"
+          "text": "pkg:github/kubernetes/kubernetes",
+          "value": "pkg:github/kubernetes/kubernetes"
         },
         "datasource": "PostgreSQL",
         "definition": "select distinct package_url from package",
@@ -3997,5 +4080,5 @@
   "timezone": "",
   "title": "Test Metric Dashboard",
   "uid": "OA7q6ArMz",
-  "version": 122
+  "version": 126
 }
