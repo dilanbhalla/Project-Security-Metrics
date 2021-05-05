@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620151590011,
+  "iteration": 1620172918179,
   "links": [
     {
       "icon": "cloud",
@@ -3306,7 +3306,7 @@
         "x": 21,
         "y": 21
       },
-      "id": 66,
+      "id": 70,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -3317,7 +3317,7 @@
           "calcs": [
             "first"
           ],
-          "fields": "/^metric$/",
+          "fields": "/^value$/",
           "values": false
         },
         "text": {},
@@ -3330,7 +3330,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.value\n  -- to_date(m.value, 'YYYY-MM-DD')::text as metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.date' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT m.value\nFROM metric m left join package p on m.package_id = p.id\nWHERE\n  m.key like 'openssf.scorecard.raw.date'\n  and\n  p.package_url = '${PackageURL}'",
           "refId": "A",
           "select": [
             [
@@ -3962,9 +3962,9 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
-          "text": "pkg:github/coreinfrastructure/best-practices-badge",
-          "value": "pkg:github/coreinfrastructure/best-practices-badge"
+          "selected": true,
+          "text": "pkg:github/curl/curl",
+          "value": "pkg:github/curl/curl"
         },
         "datasource": "PostgreSQL",
         "definition": "select distinct package_url from package",
@@ -3997,5 +3997,5 @@
   "timezone": "",
   "title": "Test Metric Dashboard",
   "uid": "OA7q6ArMz",
-  "version": 120
+  "version": 122
 }
