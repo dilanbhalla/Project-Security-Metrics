@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620172918185,
+  "iteration": 1620223662169,
   "links": [
     {
       "icon": "cloud",
@@ -63,7 +63,7 @@
       },
       "id": 65,
       "options": {
-        "content": "<center><h3><strong>{{ package }}</strong></h3></center>\n<hr>\n\n<h4><strong>Summary</strong></h4>\n<p><p>{{ content }}</p></p>\n\n<p><strong><u>License</u></strong></p>\n{{ license }}\n<br><br>\n\n<p><strong><u>Additional Information</u></strong></p>\nTo learn more, visit the project's repository, displayed (if known) under 'Detected URLs.'",
+        "content": "<center><h3><strong>{{ package }}</strong></h3></center>\n<hr>\n\n<h4><strong>Summary</strong></h4>\n<p><p>{{ content }}</p></p>\n\n<p><strong><u>License</u></strong></p>\n{{ license }}\n<br><br>\n\n<p><strong><u>Additional Information</u></strong></p>\nTo learn more, visit the project's repository or home page, displayed (if known) under 'Detected URLs.'",
         "defaultContent": "The query didn't return any results."
       },
       "pluginVersion": "7.3.3",
@@ -400,7 +400,7 @@
                 "value": 0
               },
               {
-                "color": "semi-dark-yellow",
+                "color": "dark-yellow",
                 "value": 30
               },
               {
@@ -1033,8 +1033,17 @@
             "mode": "fixed"
           },
           "decimals": 0,
-          "mappings": [],
-          "noValue": "Monthly",
+          "mappings": [
+            {
+              "from": "",
+              "id": 1,
+              "text": "Monthly",
+              "to": "",
+              "type": 1,
+              "value": "0"
+            }
+          ],
+          "noValue": "N/A",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1065,7 +1074,7 @@
           "calcs": [
             "first"
           ],
-          "fields": "/^value$/",
+          "fields": "/^criticality$/",
           "values": false
         },
         "text": {},
@@ -1078,7 +1087,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "-- FILLER QUERY, SELECTS NOTHING WITH LIMIT STATEMENT SO GRAFANA CAN DEFAULT TO \"Monthly\"\nSELECT m.value\nFROM metric m left join package p on m.package_id = p.id\nWHERE\n  m.key like 'openssf.criticality.raw.last_updated'\n  and\n  p.package_url = '${PackageURL}'\nLIMIT 0",
+          "rawSql": "SELECT\n  CASE WHEN EXISTS (SELECT\n    100.0 * value::numeric as metric\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.criticality.raw.criticality_score' and\n      p.package_url = '${PackageURL}'\n    ) THEN 0\n  END AS criticality",
           "refId": "A",
           "select": [
             [
@@ -1262,6 +1271,14 @@
               "to": "",
               "type": 1,
               "value": "2"
+            },
+            {
+              "from": "",
+              "id": 4,
+              "text": "In Progress",
+              "to": "",
+              "type": 1,
+              "value": "3"
             }
           ],
           "noValue": "None",
@@ -1283,6 +1300,10 @@
               {
                 "color": "dark-yellow",
                 "value": 2
+              },
+              {
+                "color": "dark-yellow",
+                "value": 2.9997
               }
             ]
           },
@@ -1326,7 +1347,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nCASE\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'gold'\n      ) THEN 0\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'silver'\n      ) THEN 1\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'passing'\n      ) THEN 2\nEND AS value",
+          "rawSql": "SELECT\nCASE\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'gold'\n      ) THEN 0\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'silver'\n      ) THEN 1\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'passing'\n      ) THEN 2\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'in_progress'\n      ) THEN 3\nEND AS value",
           "refId": "A",
           "select": [
             [
@@ -4046,24 +4067,52 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "pkg:github/kubernetes/kubernetes",
-          "value": "pkg:github/kubernetes/kubernetes"
+          "text": "github/kubernetes/kubernetes",
+          "value": "github/kubernetes/kubernetes"
         },
-        "datasource": "PostgreSQL",
-        "definition": "select distinct package_url from package",
-        "description": null,
+        "datasource": null,
+        "definition": "SELECT SUBSTRING(t1.package_url, 5, LENGTH(t1.package_url)-4) as package_url\nfrom\n(SELECT distinct p.id, package_url FROM package p) as t1\nleft join\n(SELECT p.id, m.value FROM package p left join metric m on p.id = m.package_id WHERE m.key like 'openssf.criticality.raw.stars') as t2\non t1.id = t2.id\norder by case when t2.value is null then 1 else 0 end, CAST (t2.value as INT) desc",
+        "description": "",
         "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": "Choose a Component",
+        "label": "Select Project",
         "multi": false,
-        "name": "PackageURL",
+        "name": "PackagePath",
         "options": [],
-        "query": "select distinct package_url from package",
+        "query": "SELECT SUBSTRING(t1.package_url, 5, LENGTH(t1.package_url)-4) as package_url\nfrom\n(SELECT distinct p.id, package_url FROM package p) as t1\nleft join\n(SELECT p.id, m.value FROM package p left join metric m on p.id = m.package_id WHERE m.key like 'openssf.criticality.raw.stars') as t2\non t1.id = t2.id\norder by case when t2.value is null then 1 else 0 end, CAST (t2.value as INT) desc",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 5,
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": false,
+          "text": "pkg:github/kubernetes/kubernetes",
+          "value": "pkg:github/kubernetes/kubernetes"
+        },
+        "datasource": null,
+        "definition": "SELECT package_url as package_url from package where package_url like '%${PackagePath}'",
+        "description": "",
+        "error": null,
+        "hide": 2,
+        "includeAll": false,
+        "label": "",
+        "multi": false,
+        "name": "PackageURL",
+        "options": [],
+        "query": "SELECT package_url as package_url from package where package_url like '%${PackagePath}'",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
         "tagValuesQuery": "",
         "tags": [],
         "tagsQuery": "",
@@ -4080,5 +4129,5 @@
   "timezone": "",
   "title": "Test Metric Dashboard",
   "uid": "OA7q6ArMz",
-  "version": 126
+  "version": 140
 }
