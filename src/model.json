@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620274970214,
+  "iteration": 1620290925455,
   "links": [
     {
       "icon": "cloud",
@@ -110,7 +110,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH package_metrics AS (select package_url, key, value from metric m left join package p on m.package_id = p.id where package_url='${PackageURL}')\n\nSELECT\n  (select value from package_metrics where key = 'openssf.bestpractice.raw.homepage_url') AS homepage_url,\n  (select value from package_metrics where key = 'openssf.bestpractice.raw.repo_url') AS source_repo,\n  (SELECT CASE\n      WHEN EXISTS ((select value from package_metrics where key = 'openssf.bestpractice.raw.description'))\n        THEN (select value from package_metrics where key = 'openssf.bestpractice.raw.description')\n      ELSE 'A summary could not be found for this project.'\n  END AS content),\n  (SELECT\n    CASE\n      WHEN EXISTS ((select value from package_metrics where key = 'openssf.criticality.raw.license' and value != '' and value != 'Other'))\n        THEN (select CONCAT('This project was released under the ', value, '.') from package_metrics where key = 'openssf.criticality.raw.license')\n      ELSE 'No license was detected.'\n    END AS license\n  ),\n  (SELECT\n    CASE\n      WHEN EXISTS ((select value from package_metrics where key = 'openssf.criticality.raw.name'))\n        THEN (select value from package_metrics where key = 'openssf.criticality.raw.name')\n      WHEN EXISTS ((select regexp_matches(package_url, '[.*pkg:npm.*]*[.*pkg:general.*]*') from package_metrics))\n        THEN (select substring(regexp_matches(package_url, '(?<=\\:).*')::text, 2, length(regexp_matches(package_url, '(?<=\\:).*')::text)-2) from package_metrics)\n      ELSE (select substring(regexp_matches(package_url, '(?<=\\/).*')::text, 2, length(regexp_matches(package_url, '(?<=\\/).*')::text)-2) from package_metrics)\n    END AS package\n  )\n",
+          "rawSql": "WITH package_metrics AS (select package_url, key, value from metric m left join package p on m.package_id = p.id where package_url='${PackageURL}')\n\nSELECT\n  (select value from package_metrics where key = 'openssf.bestpractice.raw.homepage_url') AS homepage_url,\n  (select value from package_metrics where key = 'openssf.bestpractice.raw.repo_url') AS source_repo,\n  (SELECT CASE\n      WHEN EXISTS ((select value from package_metrics where key = 'openssf.bestpractice.raw.description'))\n        THEN (select value from package_metrics where key = 'openssf.bestpractice.raw.description')\n      ELSE 'A summary could not be found for this project.'\n  END AS content),\n  (SELECT\n    CASE\n      WHEN EXISTS ((select value from package_metrics where key = 'openssf.criticality.raw.license' and value != '' and value != 'Other'))\n        THEN (select CONCAT('This project was released under the ', value, '.') from package_metrics where key = 'openssf.criticality.raw.license')\n      ELSE 'No license was detected.'\n    END AS license\n  ),\n  (SELECT\n    CASE\n      WHEN EXISTS ((select value from package_metrics where key = 'openssf.criticality.raw.name'))\n        THEN (select value from package_metrics where key = 'openssf.criticality.raw.name')\n      WHEN EXISTS ((select regexp_matches(package_url, '[.*pkg:npm.*]*[.*pkg:general.*]*') from package_metrics))\n        THEN (select substring(regexp_matches(package_url, '(?<=\\:).*')::text, 2, length(regexp_matches(package_url, '(?<=\\:).*')::text)-2) from package_metrics)\n      WHEN EXISTS ((select regexp_matches(package_url, '.*pkg:github.*') from package_metrics))\n        THEN (select substring(regexp_matches(package_url, '(?<=\\/).*')::text, 2, length(regexp_matches(package_url, '(?<=\\/).*')::text)-2) from package_metrics)\n      ELSE 'This package could not be found'\n    END AS package\n  )\n",
           "refId": "A",
           "select": [
             [
@@ -350,7 +350,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  m.properties->>'Review-Date' AS review_date,\n  m.properties->>'Issues-Identified' AS issues_identified,\n  m.properties->>'review-url-relative' AS review_url_relative\nFROM package p left join metric m on p.id = m.package_id\nWHERE p.package_url like '${PackageURL}%' and\n      m.key = 'openssf.security-review'",
+          "rawSql": "SELECT\n  m.properties->>'Review-Date' AS review_date,\n  m.properties->>'Issues-Identified' AS issues_identified,\n  m.properties->>'review-url-relative' AS review_url_relative\nFROM package p left join metric m on p.id = m.package_id\nWHERE p.package_url = '${PackageURL}' and\n      m.key = 'openssf.security-review'",
           "refId": "A",
           "select": [
             [
@@ -2669,7 +2669,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH reviews as (\n  SELECT m.properties->>'Issues-Identified' AS issues_identified\n  FROM package p left join metric m on p.id = m.package_id\n  WHERE p.package_url like '${PackageURL}%' and m.key = 'openssf.security-review'\n)\nSELECT \n  CASE\n    WHEN EXISTS (select * from reviews where issues_identified = 'Severe') THEN 1\n    WHEN EXISTS (select * from reviews where issues_identified != 'Severe') THEN 0\n  END AS value",
+          "rawSql": "WITH reviews as (\n  SELECT m.properties->>'Issues-Identified' AS issues_identified\n  FROM package p left join metric m on p.id = m.package_id\n  WHERE p.package_url = '${PackageURL}' and m.key = 'openssf.security-review'\n)\nSELECT \n  CASE\n    WHEN EXISTS (select * from reviews where issues_identified = 'Severe') THEN 1\n    WHEN EXISTS (select * from reviews where issues_identified != 'Severe') THEN 0\n  END AS value",
           "refId": "A",
           "select": [
             [
@@ -4136,7 +4136,7 @@
           "value": "pkg:github/kubernetes/kubernetes"
         },
         "datasource": null,
-        "definition": "SELECT package_url as package_url FROM package WHERE package_url like '%${PackagePath}'",
+        "definition": "SELECT package_url FROM package WHERE package_url like '%${PackagePath}'",
         "description": "",
         "error": null,
         "hide": 2,
@@ -4145,7 +4145,7 @@
         "multi": false,
         "name": "PackageURL",
         "options": [],
-        "query": "SELECT package_url as package_url FROM package WHERE package_url like '%${PackagePath}'",
+        "query": "SELECT package_url FROM package WHERE package_url like '%${PackagePath}'",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -4166,5 +4166,5 @@
   "timezone": "",
   "title": "OpenSSF Security Metrics",
   "uid": "OA7q6ArMz",
-  "version": 178
+  "version": 182
 }

@@ -8,4 +8,4 @@ on purls.id = stars.id
 ORDER BY CASE when stars.value is null then 1 else 0 end, CAST (stars.value as INT) desc
 
 -- PackageURL Variable
-SELECT package_url as package_url FROM package WHERE package_url like '%${PackagePath}'
+SELECT package_url FROM package WHERE package_url like '%${PackagePath}'
