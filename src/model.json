@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620319736718,
+  "iteration": 1620333202342,
   "links": [
     {
       "icon": "cloud",
@@ -1153,108 +1153,6 @@
       "type": "stat"
     },
     {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "from": "",
-              "id": 2,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "0"
-            },
-            {
-              "from": "",
-              "id": 3,
-              "text": "✘",
-              "to": "",
-              "type": 1,
-              "value": "1"
-            }
-          ],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-green",
-                "value": 0
-              },
-              {
-                "color": "dark-red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 3,
-        "y": 13
-      },
-      "id": 75,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/.*/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  CASE\n    WHEN EXISTS (select value from metric m left join package p on m.package_id = p.id\n      where\n        package_url='${PackageURL}' and\n        key = 'openssf.criticality.raw.redistributable' and\n        value = 'true') THEN 0\n    WHEN EXISTS (select value from metric m left join package p on m.package_id = p.id\n      where\n        package_url='${PackageURL}' and\n        key = 'openssf.criticality.raw.redistributable' and\n        value = 'false') THEN 1\n  END",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Redist. License",
-      "type": "stat"
-    },
-    {
       "collapsed": false,
       "datasource": null,
       "gridPos": {
@@ -1274,7 +1172,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "rgba(0, 0, 0, 0.5)",
+            "fixedColor": "rgba(0, 0, 0, 0.82)",
             "mode": "thresholds"
           },
           "links": [
@@ -1288,7 +1186,7 @@
             {
               "from": "",
               "id": 1,
-              "text": "Excellent",
+              "text": "Gold",
               "to": "",
               "type": 1,
               "value": "0"
@@ -1296,7 +1194,7 @@
             {
               "from": "",
               "id": 2,
-              "text": "Great",
+              "text": "Silver",
               "to": "",
               "type": 1,
               "value": "1"
@@ -1304,7 +1202,7 @@
             {
               "from": "",
               "id": 3,
-              "text": "Satisfactory",
+              "text": "Passing",
               "to": "",
               "type": 1,
               "value": "2"
@@ -1331,16 +1229,16 @@
                 "value": 0
               },
               {
-                "color": "rgb(137, 171, 3)",
+                "color": "dark-green",
                 "value": 1
               },
               {
-                "color": "dark-yellow",
+                "color": "dark-green",
                 "value": 2
               },
               {
                 "color": "dark-yellow",
-                "value": 2.9997
+                "value": 3
               }
             ]
           },
@@ -4166,5 +4064,5 @@
   "timezone": "",
   "title": "OpenSSF Security Metrics",
   "uid": "OA7q6ArMz",
-  "version": 185
+  "version": 186
 }
