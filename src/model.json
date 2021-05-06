@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620290925455,
+  "iteration": 1620319736718,
   "links": [
     {
       "icon": "cloud",
@@ -210,7 +210,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT DISTINCT\n  case m.key\n    when 'openssf.calc-metadata.project-url' then 'Project URL'\n    when 'openssf.calc-metadata.isitmaintained-url' then 'Is It Maintained?'\n    when 'openssf.criticality.raw.url' then 'Repository URL'\n    when 'openssf.bestpractice.detail-url' then 'OpenSSF Best Practices Assessment'\n    when 'openssf.bestpractice.raw.homepage_url' then 'Project Home Page'\n    else m.key\n  end as key,\n  m.value as value\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key like 'openssf.%url%' and\n  m.value like 'http%' and\n  p.package_url = '${PackageURL}' and\n  m.key != 'openssf.bestpractice.raw.repo_url'\nORDER BY key desc\n\n",
+          "rawSql": "SELECT DISTINCT\n  case m.key\n    when 'openssf.calc-metadata.project-url' then 'Repository'\n    when 'openssf.calc-metadata.isitmaintained-url' then 'Is It Maintained?'\n    when 'openssf.bestpractice.detail-url' then 'OpenSSF Best Practices Assessment'\n    when 'openssf.bestpractice.raw.homepage_url' then 'Project Home Page'\n    else m.key\n  end as key,\n  m.value as value\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key like 'openssf.%url%' and\n  m.value like 'http%' and\n  p.package_url = '${PackageURL}' and\n  m.key != 'openssf.bestpractice.raw.repo_url' and\n  m.key != 'openssf.criticality.raw.url'\nORDER BY key desc\n\n",
           "refId": "A",
           "select": [
             [
@@ -4166,5 +4166,5 @@
   "timezone": "",
   "title": "OpenSSF Security Metrics",
   "uid": "OA7q6ArMz",
-  "version": 182
+  "version": 185
 }
