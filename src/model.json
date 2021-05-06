@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620223662169,
+  "iteration": 1620274970214,
   "links": [
     {
       "icon": "cloud",
@@ -27,7 +27,7 @@
       "url": "https://metrics.openssf.org"
     },
     {
-      "asDropdown": true,
+      "asDropdown": false,
       "icon": "external link",
       "includeVars": true,
       "tags": [],
@@ -36,18 +36,55 @@
   ],
   "panels": [
     {
-      "collapsed": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 54,
-      "panels": [],
-      "title": "Project Information",
-      "type": "row"
+      "id": 73,
+      "options": {
+        "content": "",
+        "mode": "markdown"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__time(time_column),\n  value1\nFROM\n  metric_table\nWHERE\n  $__timeFilter(time_column)\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "transparent": true,
+      "type": "text"
     },
     {
       "datasource": null,
@@ -61,7 +98,7 @@
         "x": 0,
         "y": 1
       },
-      "id": 65,
+      "id": 81,
       "options": {
         "content": "<center><h3><strong>{{ package }}</strong></h3></center>\n<hr>\n\n<h4><strong>Summary</strong></h4>\n<p><p>{{ content }}</p></p>\n\n<p><strong><u>License</u></strong></p>\n{{ license }}\n<br><br>\n\n<p><strong><u>Additional Information</u></strong></p>\nTo learn more, visit the project's repository or home page, displayed (if known) under 'Detected URLs.'",
         "defaultContent": "The query didn't return any results."
@@ -73,7 +110,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  (SELECT value from metric m left join package p on m.package_id = p.id  where package_url='${PackageURL}' and key = 'openssf.bestpractice.raw.homepage_url') AS homepage_url,\n  (SELECT value from metric m left join package p on m.package_id = p.id  where package_url='${PackageURL}' and key = 'openssf.bestpractice.raw.repo_url') AS source_repo,\n  (SELECT\n    CASE\n      WHEN EXISTS ((SELECT regexp_matches(p.package_url, '.*pkg:npm.*')\n          from metric m left join package p on m.package_id = p.id\n          where package_url='${PackageURL}' order by p asc limit 1))\n        THEN (SELECT substring(regexp_matches(p.package_url, '(?<=\\:).*')::text, 2, length(regexp_matches(p.package_url, '(?<=\\:).*')::text)-2) \n            from metric m left join package p on m.package_id = p.id\n            where package_url='${PackageURL}' order by p asc limit 1)\n      ELSE (SELECT substring(regexp_matches(p.package_url, '(?<=\\/).*')::text, 2, length(regexp_matches(p.package_url, '(?<=\\/).*')::text)-2) \n              from metric m left join package p on m.package_id = p.id\n              where package_url='${PackageURL}' order by p asc limit 1)\n    END AS package\n  ),\n  (SELECT\n    CASE\n      WHEN EXISTS ((SELECT value from metric m left join package p on m.package_id = p.id\n                  where package_url='${PackageURL}' and key = 'openssf.bestpractice.raw.description'))\n                THEN (SELECT value from metric m left join package p on m.package_id = p.id where package_url='${PackageURL}' and key = 'openssf.bestpractice.raw.description')\n      ELSE 'A summary could not be found for this project.'\n    END AS content\n  ),\n  (SELECT\n    CASE\n      WHEN EXISTS ((SELECT value from metric m left join package p on m.package_id = p.id\n                  where package_url='${PackageURL}' and key = 'openssf.criticality.raw.license' and value != '' and value != 'Other'))\n            THEN (SELECT CONCAT('This project was released under the ', value, '.') from metric m left join package p on m.package_id = p.id\n                  where package_url='${PackageURL}' and key = 'openssf.criticality.raw.license')\n        ELSE 'No license was detected.'\n    END AS license\n  )\n",
+          "rawSql": "WITH package_metrics AS (select package_url, key, value from metric m left join package p on m.package_id = p.id where package_url='${PackageURL}')\n\nSELECT\n  (select value from package_metrics where key = 'openssf.bestpractice.raw.homepage_url') AS homepage_url,\n  (select value from package_metrics where key = 'openssf.bestpractice.raw.repo_url') AS source_repo,\n  (SELECT CASE\n      WHEN EXISTS ((select value from package_metrics where key = 'openssf.bestpractice.raw.description'))\n        THEN (select value from package_metrics where key = 'openssf.bestpractice.raw.description')\n      ELSE 'A summary could not be found for this project.'\n  END AS content),\n  (SELECT\n    CASE\n      WHEN EXISTS ((select value from package_metrics where key = 'openssf.criticality.raw.license' and value != '' and value != 'Other'))\n        THEN (select CONCAT('This project was released under the ', value, '.') from package_metrics where key = 'openssf.criticality.raw.license')\n      ELSE 'No license was detected.'\n    END AS license\n  ),\n  (SELECT\n    CASE\n      WHEN EXISTS ((select value from package_metrics where key = 'openssf.criticality.raw.name'))\n        THEN (select value from package_metrics where key = 'openssf.criticality.raw.name')\n      WHEN EXISTS ((select regexp_matches(package_url, '[.*pkg:npm.*]*[.*pkg:general.*]*') from package_metrics))\n        THEN (select substring(regexp_matches(package_url, '(?<=\\:).*')::text, 2, length(regexp_matches(package_url, '(?<=\\:).*')::text)-2) from package_metrics)\n      ELSE (select substring(regexp_matches(package_url, '(?<=\\/).*')::text, 2, length(regexp_matches(package_url, '(?<=\\/).*')::text)-2) from package_metrics)\n    END AS package\n  )\n",
           "refId": "A",
           "select": [
             [
@@ -1074,7 +1111,7 @@
           "calcs": [
             "first"
           ],
-          "fields": "/^criticality$/",
+          "fields": "/^criticality_date$/",
           "values": false
         },
         "text": {},
@@ -1087,7 +1124,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE WHEN EXISTS (SELECT\n    100.0 * value::numeric as metric\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.criticality.raw.criticality_score' and\n      p.package_url = '${PackageURL}'\n    ) THEN 0\n  END AS criticality",
+          "rawSql": "SELECT\n  CASE WHEN EXISTS (SELECT value as metric\n    FROM metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.criticality.raw.criticality_score' and\n      p.package_url = '${PackageURL}'\n    ) THEN 0\n  END AS criticality_date",
           "refId": "A",
           "select": [
             [
@@ -1167,7 +1204,7 @@
         "x": 3,
         "y": 13
       },
-      "id": 61,
+      "id": 75,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -1190,7 +1227,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select\n  case\n    when exists (\n      SELECT value from metric m left join package p on m.package_id = p.id\n      where package_url='${PackageURL}' and\n      key = 'openssf.criticality.raw.license' and\n      (value='MIT License' OR value='Apache License 2.0')\n      )\n    then 0\n    when exists (\n      SELECT value from metric m left join package p on m.package_id = p.id\n      where package_url='${PackageURL}' and\n      key = 'openssf.criticality.raw.license' and\n      (value='BAD LICENSE 1' OR value='BAD LICENSE 2')\n      )\n    then 1\n  end",
+          "rawSql": "SELECT\n  CASE\n    WHEN EXISTS (select value from metric m left join package p on m.package_id = p.id\n      where\n        package_url='${PackageURL}' and\n        key = 'openssf.criticality.raw.redistributable' and\n        value = 'true') THEN 0\n    WHEN EXISTS (select value from metric m left join package p on m.package_id = p.id\n      where\n        package_url='${PackageURL}' and\n        key = 'openssf.criticality.raw.redistributable' and\n        value = 'false') THEN 1\n  END",
           "refId": "A",
           "select": [
             [
@@ -1317,7 +1354,7 @@
         "x": 0,
         "y": 16
       },
-      "id": 22,
+      "id": 76,
       "links": [
         {
           "targetBlank": true,
@@ -1347,7 +1384,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\nCASE\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'gold'\n      ) THEN 0\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'silver'\n      ) THEN 1\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'passing'\n      ) THEN 2\n  WHEN EXISTS (SELECT m.value\n    FROM\n      metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}' and\n      m.value = 'in_progress'\n      ) THEN 3\nEND AS value",
+          "rawSql": "WITH badge as (SELECT m.value\n    FROM metric m left join package p on m.package_id = p.id\n    WHERE\n      m.key = 'openssf.bestpractice.raw.badge_level' and\n      p.package_url = '${PackageURL}')\nSELECT\n  CASE\n    WHEN EXISTS (SELECT * from badge where badge.value = 'gold') THEN 0\n    WHEN EXISTS (SELECT * from badge where badge.value = 'silver') THEN 1\n    WHEN EXISTS (SELECT * from badge where badge.value = 'passing') THEN 2\n    WHEN EXISTS (SELECT * from badge where badge.value = 'in_progress') THEN 3\n  END AS value",
           "refId": "A",
           "select": [
             [
@@ -1451,129 +1488,6 @@
         "h": 2,
         "w": 3,
         "x": 3,
-        "y": 16
-      },
-      "id": 27,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 4\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.static_analysis_fixed_status' and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Static Analysis - Fixed",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "3"
-            },
-            {
-              "from": "",
-              "id": 2,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "2"
-            },
-            {
-              "from": "",
-              "id": 3,
-              "text": "?",
-              "to": "",
-              "type": 1,
-              "value": "1"
-            },
-            {
-              "from": "",
-              "id": 4,
-              "text": "✘",
-              "to": "",
-              "type": 1,
-              "value": "4"
-            }
-          ],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-yellow",
-                "value": 1
-              },
-              {
-                "color": "dark-green",
-                "value": 2
-              },
-              {
-                "color": "dark-green",
-                "value": 3
-              },
-              {
-                "color": "dark-red",
-                "value": 4
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 6,
         "y": 16
       },
       "id": 29,
@@ -1696,7 +1610,7 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 9,
+        "x": 6,
         "y": 16
       },
       "id": 2,
@@ -1819,7 +1733,7 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 16
       },
       "id": 18,
@@ -1907,7 +1821,7 @@
               "text": "✘",
               "to": "",
               "type": 1,
-              "value": "0"
+              "value": "4"
             }
           ],
           "noValue": "?",
@@ -1919,7 +1833,7 @@
                 "value": null
               },
               {
-                "color": "dark-red",
+                "color": "dark-yellow",
                 "value": 1
               },
               {
@@ -1929,6 +1843,10 @@
               {
                 "color": "dark-green",
                 "value": 3
+              },
+              {
+                "color": "dark-red",
+                "value": 4
               }
             ]
           }
@@ -1938,10 +1856,10 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 15,
+        "x": 12,
         "y": 16
       },
-      "id": 30,
+      "id": 27,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -1949,9 +1867,9 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "max"
+            "mean"
           ],
-          "fields": "/^metric$/",
+          "fields": "",
           "values": false
         },
         "text": {},
@@ -1964,7 +1882,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 0\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key in ('openssf.bestpractice.raw.crypto_published_status',\n\t\t        'openssf.bestpractice.raw.crypto_keylength_status',\n\t\t        'openssf.bestpractice.raw.crypto_working_status',\n\t\t        'openssf.bestpractice.raw.crypto_random_status'\n\t\t  ) and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 4\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.static_analysis_fixed_status' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -1988,7 +1906,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Only Strong Crypto",
+      "title": "Static Analysis - Fixed",
       "type": "stat"
     },
     {
@@ -2061,7 +1979,7 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 18,
+        "x": 15,
         "y": 16
       },
       "id": 26,
@@ -2112,6 +2030,125 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Secure Design Knowledge",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "from": "",
+              "id": 1,
+              "text": "✓",
+              "to": "",
+              "type": 1,
+              "value": "3"
+            },
+            {
+              "from": "",
+              "id": 2,
+              "text": "✓",
+              "to": "",
+              "type": 1,
+              "value": "2"
+            },
+            {
+              "from": "",
+              "id": 3,
+              "text": "?",
+              "to": "",
+              "type": 1,
+              "value": "1"
+            },
+            {
+              "from": "",
+              "id": 4,
+              "text": "✘",
+              "to": "",
+              "type": 1,
+              "value": "0"
+            }
+          ],
+          "noValue": "?",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 1
+              },
+              {
+                "color": "dark-green",
+                "value": 2
+              },
+              {
+                "color": "dark-green",
+                "value": 3
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 18,
+        "y": 16
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "/^metric$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 0\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key in ('openssf.bestpractice.raw.crypto_published_status',\n\t\t        'openssf.bestpractice.raw.crypto_keylength_status',\n\t\t        'openssf.bestpractice.raw.crypto_working_status',\n\t\t        'openssf.bestpractice.raw.crypto_random_status'\n\t\t  ) and\n  p.package_url = '${PackageURL}'\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Only Strong Crypto",
       "type": "stat"
     },
     {
@@ -2609,7 +2646,7 @@
         "x": 12,
         "y": 18
       },
-      "id": 62,
+      "id": 77,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -2632,7 +2669,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT \n  CASE\n    WHEN EXISTS (\n      SELECT\n        m.properties->>'Issues-Identified' AS issues_identified\n      FROM package p left join metric m on p.id = m.package_id\n      WHERE p.package_url like '${PackageURL}%' and\n            m.key = 'openssf.security-review' and\n            m.properties->>'Issues-Identified' = 'Severe'\n    ) THEN 1\n    WHEN EXISTS (\n      SELECT\n        m.properties->>'Issues-Identified' AS issues_identified\n      FROM package p left join metric m on p.id = m.package_id\n      WHERE p.package_url like '${PackageURL}%' and\n            m.key = 'openssf.security-review' and\n            m.properties->>'Issues-Identified' != 'Severe'\n    ) THEN 0\n  END AS value",
+          "rawSql": "WITH reviews as (\n  SELECT m.properties->>'Issues-Identified' AS issues_identified\n  FROM package p left join metric m on p.id = m.package_id\n  WHERE p.package_url like '${PackageURL}%' and m.key = 'openssf.security-review'\n)\nSELECT \n  CASE\n    WHEN EXISTS (select * from reviews where issues_identified = 'Severe') THEN 1\n    WHEN EXISTS (select * from reviews where issues_identified != 'Severe') THEN 0\n  END AS value",
           "refId": "A",
           "select": [
             [
@@ -2727,7 +2764,7 @@
         "x": 0,
         "y": 21
       },
-      "id": 63,
+      "id": 78,
       "links": [
         {
           "targetBlank": true,
@@ -2744,7 +2781,7 @@
           "calcs": [
             "first"
           ],
-          "fields": "/^metric$/",
+          "fields": "/^score$/",
           "values": false
         },
         "text": {},
@@ -2757,7 +2794,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE\n    WHEN EXISTS (SELECT 1 as metric\n          FROM metric m left join package p on m.package_id = p.id\n          WHERE\n            m.key like 'openssf.scorecard.raw.%' and\n            p.package_url = '${PackageURL}'\n          HAVING COUNT(*) < 8) THEN -1\n    ELSE (SELECT (count(*) / 0.12) as metric\n            FROM\n              metric m left join package p on m.package_id = p.id\n            WHERE\n              m.key like 'openssf.scorecard.raw.%' and\n              p.package_url = '${PackageURL}' and\n              m.value = 'true')\n  END;",
+          "rawSql": "WITH scorecard AS (SELECT value FROM metric m left join package p on m.package_id = p.id\n  WHERE m.key like 'openssf.scorecard.raw.%' and p.package_url = '${PackageURL}')\nSELECT\n  CASE\n    WHEN EXISTS (SELECT 1 FROM scorecard HAVING COUNT(*) < 8) THEN -1\n    ELSE (SELECT (count(*) / 0.12) FROM scorecard WHERE value = 'true')\n  END as score",
           "refId": "A",
           "select": [
             [
@@ -4071,7 +4108,7 @@
           "value": "github/kubernetes/kubernetes"
         },
         "datasource": null,
-        "definition": "SELECT SUBSTRING(t1.package_url, 5, LENGTH(t1.package_url)-4) as package_url\nfrom\n(SELECT distinct p.id, package_url FROM package p) as t1\nleft join\n(SELECT p.id, m.value FROM package p left join metric m on p.id = m.package_id WHERE m.key like 'openssf.criticality.raw.stars') as t2\non t1.id = t2.id\norder by case when t2.value is null then 1 else 0 end, CAST (t2.value as INT) desc",
+        "definition": "SELECT SUBSTRING(purls.package_url, 5, LENGTH(purls.package_url)-4) as package_url\nFROM\n(select distinct p.id, package_url FROM package p) as purls\nleft join\n(select p.id, m.value from package p left join metric m on p.id = m.package_id where m.key like 'openssf.criticality.raw.stars') as stars\non purls.id = stars.id\nORDER BY CASE when stars.value is null then 1 else 0 end, CAST (stars.value as INT) desc",
         "description": "",
         "error": null,
         "hide": 0,
@@ -4080,7 +4117,7 @@
         "multi": false,
         "name": "PackagePath",
         "options": [],
-        "query": "SELECT SUBSTRING(t1.package_url, 5, LENGTH(t1.package_url)-4) as package_url\nfrom\n(SELECT distinct p.id, package_url FROM package p) as t1\nleft join\n(SELECT p.id, m.value FROM package p left join metric m on p.id = m.package_id WHERE m.key like 'openssf.criticality.raw.stars') as t2\non t1.id = t2.id\norder by case when t2.value is null then 1 else 0 end, CAST (t2.value as INT) desc",
+        "query": "SELECT SUBSTRING(purls.package_url, 5, LENGTH(purls.package_url)-4) as package_url\nFROM\n(select distinct p.id, package_url FROM package p) as purls\nleft join\n(select p.id, m.value from package p left join metric m on p.id = m.package_id where m.key like 'openssf.criticality.raw.stars') as stars\non purls.id = stars.id\nORDER BY CASE when stars.value is null then 1 else 0 end, CAST (stars.value as INT) desc",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -4099,7 +4136,7 @@
           "value": "pkg:github/kubernetes/kubernetes"
         },
         "datasource": null,
-        "definition": "SELECT package_url as package_url from package where package_url like '%${PackagePath}'",
+        "definition": "SELECT package_url as package_url FROM package WHERE package_url like '%${PackagePath}'",
         "description": "",
         "error": null,
         "hide": 2,
@@ -4108,7 +4145,7 @@
         "multi": false,
         "name": "PackageURL",
         "options": [],
-        "query": "SELECT package_url as package_url from package where package_url like '%${PackagePath}'",
+        "query": "SELECT package_url as package_url FROM package WHERE package_url like '%${PackagePath}'",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -4127,7 +4164,7 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Test Metric Dashboard",
+  "title": "OpenSSF Security Metrics",
   "uid": "OA7q6ArMz",
-  "version": 140
+  "version": 178
 }

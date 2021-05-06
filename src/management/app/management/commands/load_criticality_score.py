@@ -65,6 +65,17 @@ class Command(BaseCommand):
                             )
                             metric.value = value
                             metric.save()
+                            if key == "license":
+                                redistributable = "unknown"
+                                if value in ["Apache License 2.0", "MIT License"]:
+                                    redistributable = "true"
+                                elif value in ["BAD LICENSE 1", "BAD LICENSE 2"]:
+                                    redistributable = "false"
+                                metric, _ = Metric.objects.get_or_create(
+                                    package=package, key=f"openssf.criticality.raw.redistributable"
+                                )
+                                metric.value = redistributable
+                                metric.save()
                         except Exception as msg:
                             logging.warning(
                                 "Failed to save data (%s, %s): %s", package_url, key, msg
