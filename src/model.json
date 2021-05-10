@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620333202342,
+  "iteration": 1620605426187,
   "links": [
     {
       "icon": "cloud",
@@ -514,6 +514,7 @@
     },
     {
       "datasource": null,
+      "description": "Number of project contributors with commits",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -551,280 +552,6 @@
         "h": 2,
         "w": 3,
         "x": 3,
-        "y": 11
-      },
-      "id": 11,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  value::integer as metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.criticality.raw.stars' and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "# Stars",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-red",
-                "value": 0
-              },
-              {
-                "color": "dark-yellow",
-                "value": 5
-              },
-              {
-                "color": "dark-green",
-                "value": 20
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 6,
-        "y": 11
-      },
-      "id": 15,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  value::integer as metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.criticality.raw.recent_releases_count' and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "# Recent Releases",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "description": "How many years since this project was first created.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "mappings": [],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-red",
-                "value": 0
-              },
-              {
-                "color": "dark-yellow",
-                "value": 2
-              },
-              {
-                "color": "dark-green",
-                "value": 4
-              }
-            ]
-          },
-          "unit": "years"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 9,
-        "y": 11
-      },
-      "id": 12,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "value"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  value::numeric / 12.0 as metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.criticality.raw.created_since' and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Project Age",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-red",
-                "value": 0
-              },
-              {
-                "color": "dark-yellow",
-                "value": 5
-              },
-              {
-                "color": "dark-green",
-                "value": 100
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 12,
         "y": 11
       },
       "id": 13,
@@ -879,7 +606,191 @@
     },
     {
       "datasource": null,
-      "description": "",
+      "description": "Years since this project was first created",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "mappings": [],
+          "noValue": "?",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "dark-yellow",
+                "value": 2
+              },
+              {
+                "color": "dark-green",
+                "value": 4
+              }
+            ]
+          },
+          "unit": "years"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 6,
+        "y": 11
+      },
+      "id": 12,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  value::numeric / 12.0 as metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.criticality.raw.created_since' and\n  p.package_url = '${PackageURL}'\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Project Age",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "Number of releases in the last year",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "?",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "dark-yellow",
+                "value": 5
+              },
+              {
+                "color": "dark-green",
+                "value": 20
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 9,
+        "y": 11
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  value::integer as metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.criticality.raw.recent_releases_count' and\n  p.package_url = '${PackageURL}'\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "# Recent Releases",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "Time since the project was last updated (in months)",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -916,7 +827,7 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 15,
+        "x": 12,
         "y": 11
       },
       "id": 14,
@@ -971,6 +882,7 @@
     },
     {
       "datasource": null,
+      "description": "Number of project mentions in the commit messages",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1007,7 +919,7 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 18,
+        "x": 15,
         "y": 11
       },
       "id": 9,
@@ -1058,6 +970,98 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "# Dependents",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "Number of stars this project has received on GitHub",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "noValue": "?",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "dark-yellow",
+                "value": 5
+              },
+              {
+                "color": "dark-green",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 18,
+        "y": 11
+      },
+      "id": 11,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "value"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  value::integer as metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.criticality.raw.stars' and\n  p.package_url = '${PackageURL}'\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "# Stars",
       "type": "stat"
     },
     {
@@ -1317,6 +1321,7 @@
     },
     {
       "datasource": null,
+      "description": "The project uses static analysis and fixes any bugs found.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -1326,31 +1331,23 @@
               "text": "✓",
               "to": "",
               "type": 1,
-              "value": "3"
+              "value": "0"
             },
             {
               "from": "",
-              "id": 2,
+              "id": 4,
               "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "2"
-            },
-            {
-              "from": "",
-              "id": 3,
-              "text": "?",
               "to": "",
               "type": 1,
               "value": "1"
             },
             {
               "from": "",
-              "id": 4,
+              "id": 5,
               "text": "✘",
               "to": "",
               "type": 1,
-              "value": "4"
+              "value": "2"
             }
           ],
           "noValue": "?",
@@ -1362,20 +1359,16 @@
                 "value": null
               },
               {
-                "color": "dark-yellow",
+                "color": "dark-green",
+                "value": 0
+              },
+              {
+                "color": "dark-green",
                 "value": 1
               },
               {
-                "color": "dark-green",
-                "value": 2
-              },
-              {
-                "color": "dark-green",
-                "value": 3
-              },
-              {
                 "color": "dark-red",
-                "value": 4
+                "value": 2
               }
             ]
           }
@@ -1388,7 +1381,7 @@
         "x": 3,
         "y": 16
       },
-      "id": 29,
+      "id": 84,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -1411,7 +1404,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 4\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.dynamic_analysis_fixed_status' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE\n    WHEN m.value ='Met' and m1.value ='Met' THEN 0\n    WHEN m.value = 'N/A'and m1.value = 'N/A'THEN 1\n    WHEN m.value = 'Unmet'or m1.value = 'Unmet'THEN 2\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id left join metric m1 on m.package_id = m1.package_id\nWHERE\n  m.key = 'openssf.bestpractice.raw.static_analysis_status' and\n  m1.key = 'openssf.bestpractice.raw.static_analysis_fixed_status' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -1435,11 +1428,12 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Dynamic Analysis - Fixed",
+      "title": "Static Analysis",
       "type": "stat"
     },
     {
       "datasource": null,
+      "description": "The project uses dynamic analysis and fixes any bugs found.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -1449,31 +1443,23 @@
               "text": "✓",
               "to": "",
               "type": 1,
-              "value": "3"
+              "value": "0"
             },
             {
               "from": "",
-              "id": 2,
+              "id": 4,
               "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "2"
-            },
-            {
-              "from": "",
-              "id": 3,
-              "text": "No Info",
               "to": "",
               "type": 1,
               "value": "1"
             },
             {
               "from": "",
-              "id": 4,
+              "id": 5,
               "text": "✘",
               "to": "",
               "type": 1,
-              "value": "4"
+              "value": "2"
             }
           ],
           "noValue": "?",
@@ -1485,20 +1471,16 @@
                 "value": null
               },
               {
-                "color": "dark-yellow",
+                "color": "dark-green",
+                "value": 0
+              },
+              {
+                "color": "dark-green",
                 "value": 1
               },
               {
-                "color": "dark-green",
-                "value": 2
-              },
-              {
-                "color": "dark-green",
-                "value": 3
-              },
-              {
                 "color": "dark-red",
-                "value": 4
+                "value": 2
               }
             ]
           }
@@ -1511,7 +1493,7 @@
         "x": 6,
         "y": 16
       },
-      "id": 2,
+      "id": 83,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -1534,7 +1516,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 4\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.static_analysis_status' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE\n    WHEN m.value ='Met' and m1.value ='Met' THEN 0\n    WHEN m.value = 'N/A'and m1.value = 'N/A'THEN 1\n    WHEN m.value = 'Unmet'or m1.value = 'Unmet'THEN 2\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id left join metric m1 on m.package_id = m1.package_id\nWHERE\n  m.key = 'openssf.bestpractice.raw.dynamic_analysis_status' and\n  m1.key = 'openssf.bestpractice.raw.dynamic_analysis_fixed_status' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -1558,134 +1540,12 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Static Analysis - Used",
+      "title": "Dynamic Analysis",
       "type": "stat"
     },
     {
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "3"
-            },
-            {
-              "from": "",
-              "id": 2,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "2"
-            },
-            {
-              "from": "",
-              "id": 3,
-              "text": "No Info",
-              "to": "",
-              "type": 1,
-              "value": "1"
-            },
-            {
-              "from": "",
-              "id": 4,
-              "text": "✘",
-              "to": "",
-              "type": 1,
-              "value": "4"
-            }
-          ],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-yellow",
-                "value": 1
-              },
-              {
-                "color": "dark-green",
-                "value": 2
-              },
-              {
-                "color": "dark-green",
-                "value": 3
-              },
-              {
-                "color": "dark-red",
-                "value": 4
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 9,
-        "y": 16
-      },
-      "id": 18,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 4\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.dynamic_analysis_status' and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Dynamic Analysis - Used",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
+      "description": "At least one of the project's primary developers knows of common kinds of errors that lead to vulnerabilities in this kind of software, as well as at least one method to counter or mitigate each of them.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -1719,7 +1579,7 @@
               "text": "✘",
               "to": "",
               "type": 1,
-              "value": "4"
+              "value": "0"
             }
           ],
           "noValue": "?",
@@ -1731,20 +1591,12 @@
                 "value": null
               },
               {
-                "color": "dark-yellow",
-                "value": 1
-              },
-              {
-                "color": "dark-green",
-                "value": 2
-              },
-              {
-                "color": "dark-green",
-                "value": 3
-              },
-              {
                 "color": "dark-red",
-                "value": 4
+                "value": 0
+              },
+              {
+                "color": "dark-green",
+                "value": 1
               }
             ]
           }
@@ -1754,10 +1606,10 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 12,
+        "x": 9,
         "y": 16
       },
-      "id": 27,
+      "id": 25,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -1780,7 +1632,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 4\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.static_analysis_fixed_status' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 0\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.know_common_errors_status' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -1804,11 +1656,256 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Static Analysis - Fixed",
+      "title": "Security Error Awareness",
       "type": "stat"
     },
     {
       "datasource": null,
+      "description": "The project uses basic good cryptographic practices.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "from": "",
+              "id": 1,
+              "text": "✓",
+              "to": "",
+              "type": 1,
+              "value": "3"
+            },
+            {
+              "from": "",
+              "id": 2,
+              "text": "✓",
+              "to": "",
+              "type": 1,
+              "value": "2"
+            },
+            {
+              "from": "",
+              "id": 3,
+              "text": "?",
+              "to": "",
+              "type": 1,
+              "value": "1"
+            },
+            {
+              "from": "",
+              "id": 4,
+              "text": "✘",
+              "to": "",
+              "type": 1,
+              "value": "0"
+            }
+          ],
+          "noValue": "?",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 1
+              },
+              {
+                "color": "dark-green",
+                "value": 2
+              },
+              {
+                "color": "dark-green",
+                "value": 3
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 12,
+        "y": 16
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "/^metric$/",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 0\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key in ('openssf.bestpractice.raw.crypto_published_status',\n\t\t        'openssf.bestpractice.raw.crypto_keylength_status',\n\t\t        'openssf.bestpractice.raw.crypto_working_status',\n\t\t        'openssf.bestpractice.raw.crypto_random_status'\n\t\t  ) and\n  p.package_url = '${PackageURL}'\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Only Strong Crypto",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "The project requires use of two-factor authentication.",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "from": "",
+              "id": 1,
+              "text": "✓",
+              "to": "",
+              "type": 1,
+              "value": "3"
+            },
+            {
+              "from": "",
+              "id": 2,
+              "text": "✓",
+              "to": "",
+              "type": 1,
+              "value": "2"
+            },
+            {
+              "from": "",
+              "id": 3,
+              "text": "?",
+              "to": "",
+              "type": 1,
+              "value": "1"
+            },
+            {
+              "from": "",
+              "id": 4,
+              "text": "✘",
+              "to": "",
+              "type": 1,
+              "value": "0"
+            }
+          ],
+          "noValue": "?",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "dark-yellow",
+                "value": 1
+              },
+              {
+                "color": "dark-green",
+                "value": 2
+              },
+              {
+                "color": "dark-green",
+                "value": 3
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 15,
+        "y": 16
+      },
+      "id": 28,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 0\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.require_2fa_status' and\n  p.package_url = '${PackageURL}'\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "2FA Required",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "The project has at least one primary developer who knows how to design secure software.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -1877,7 +1974,7 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 15,
+        "x": 18,
         "y": 16
       },
       "id": 26,
@@ -1928,125 +2025,6 @@
       "timeFrom": null,
       "timeShift": null,
       "title": "Secure Design Knowledge",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "3"
-            },
-            {
-              "from": "",
-              "id": 2,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "2"
-            },
-            {
-              "from": "",
-              "id": 3,
-              "text": "?",
-              "to": "",
-              "type": 1,
-              "value": "1"
-            },
-            {
-              "from": "",
-              "id": 4,
-              "text": "✘",
-              "to": "",
-              "type": 1,
-              "value": "0"
-            }
-          ],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-red",
-                "value": 1
-              },
-              {
-                "color": "dark-green",
-                "value": 2
-              },
-              {
-                "color": "dark-green",
-                "value": 3
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 18,
-        "y": 16
-      },
-      "id": 30,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "max"
-          ],
-          "fields": "/^metric$/",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 0\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key in ('openssf.bestpractice.raw.crypto_published_status',\n\t\t        'openssf.bestpractice.raw.crypto_keylength_status',\n\t\t        'openssf.bestpractice.raw.crypto_working_status',\n\t\t        'openssf.bestpractice.raw.crypto_random_status'\n\t\t  ) and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Only Strong Crypto",
       "type": "stat"
     },
     {
@@ -2134,122 +2112,7 @@
     },
     {
       "datasource": null,
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "3"
-            },
-            {
-              "from": "",
-              "id": 2,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "2"
-            },
-            {
-              "from": "",
-              "id": 3,
-              "text": "?",
-              "to": "",
-              "type": 1,
-              "value": "1"
-            },
-            {
-              "from": "",
-              "id": 4,
-              "text": "✘",
-              "to": "",
-              "type": 1,
-              "value": "0"
-            }
-          ],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-red",
-                "value": 0
-              },
-              {
-                "color": "dark-green",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 3,
-        "y": 18
-      },
-      "id": 25,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 0\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.know_common_errors_status' and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Security Error Awareness",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
+      "description": "The project publishes the process for reporting vulnerabilities on the project site.",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -2318,7 +2181,7 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 6,
+        "x": 3,
         "y": 18
       },
       "id": 24,
@@ -2373,29 +2236,14 @@
     },
     {
       "datasource": null,
+      "description": "The project uses at least one automated test suite that is publicly released as FLOSS, and clearly shows how to run the test suite(s).",
       "fieldConfig": {
         "defaults": {
           "mappings": [
             {
               "from": "",
-              "id": 1,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "3"
-            },
-            {
-              "from": "",
-              "id": 2,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "2"
-            },
-            {
-              "from": "",
               "id": 3,
-              "text": "?",
+              "text": "✘",
               "to": "",
               "type": 1,
               "value": "1"
@@ -2403,118 +2251,10 @@
             {
               "from": "",
               "id": 4,
-              "text": "✘",
-              "to": "",
-              "type": 1,
-              "value": "0"
-            }
-          ],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-red",
-                "value": 0
-              },
-              {
-                "color": "dark-yellow",
-                "value": 1
-              },
-              {
-                "color": "dark-green",
-                "value": 2
-              },
-              {
-                "color": "dark-green",
-                "value": 3
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 9,
-        "y": 18
-      },
-      "id": 28,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 3\n    WHEN 'N/A' THEN 2\n    WHEN '?' THEN 1\n    WHEN 'Unmet' THEN 0\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.require_2fa_status' and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "2FA Required",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "description": "✓ → no severe reviews\n\n✘ → at least one severe review\n\n? → no reviews",
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
               "text": "✓",
               "to": "",
               "type": 1,
               "value": "0"
-            },
-            {
-              "from": "",
-              "id": 2,
-              "text": "✘",
-              "to": "",
-              "type": 1,
-              "value": "1"
             }
           ],
           "noValue": "?",
@@ -2541,10 +2281,10 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 12,
+        "x": 6,
         "y": 18
       },
-      "id": 77,
+      "id": 90,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -2567,7 +2307,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH reviews as (\n  SELECT m.properties->>'Issues-Identified' AS issues_identified\n  FROM package p left join metric m on p.id = m.package_id\n  WHERE p.package_url = '${PackageURL}' and m.key = 'openssf.security-review'\n)\nSELECT \n  CASE\n    WHEN EXISTS (select * from reviews where issues_identified = 'Severe') THEN 1\n    WHEN EXISTS (select * from reviews where issues_identified != 'Severe') THEN 0\n  END AS value",
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'Met' THEN 0\n    WHEN 'Unmet' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.bestpractice.raw.test_status' and\n  p.package_url = '${PackageURL}'",
           "refId": "A",
           "select": [
             [
@@ -2591,7 +2331,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Security Reviews",
+      "title": "Automated Tests",
       "type": "stat"
     },
     {
@@ -2662,7 +2402,7 @@
         "x": 0,
         "y": 21
       },
-      "id": 78,
+      "id": 92,
       "links": [
         {
           "targetBlank": true,
@@ -2692,7 +2432,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "WITH scorecard AS (SELECT value FROM metric m left join package p on m.package_id = p.id\n  WHERE m.key like 'openssf.scorecard.raw.%' and p.package_url = '${PackageURL}')\nSELECT\n  CASE\n    WHEN EXISTS (SELECT 1 FROM scorecard HAVING COUNT(*) < 8) THEN -1\n    ELSE (SELECT (count(*) / 0.12) FROM scorecard WHERE value = 'true')\n  END as score",
+          "rawSql": "WITH scorecard AS (SELECT m.key, value FROM metric m left join package p on m.package_id = p.id\n  WHERE m.key like 'openssf.scorecard.raw.%' and\n        m.key != 'openssf.scorecard.raw.date' and\n        m.key != 'openssf.scorecard.raw.cii-best-practices'\n        and p.package_url = '${PackageURL}')\nSELECT\n  CASE\n    WHEN EXISTS (SELECT 1 FROM scorecard HAVING COUNT(*) < 8) THEN -1\n    ELSE (SELECT (count(*) / 0.12) FROM scorecard WHERE value = 'true')\n  END as score",
           "refId": "A",
           "select": [
             [
@@ -2716,11 +2456,12 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Overall",
+      "title": "Score",
       "type": "stat"
     },
     {
       "datasource": null,
+      "description": "Did the project get any commits in the last 90 days?",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -2820,6 +2561,7 @@
     },
     {
       "datasource": null,
+      "description": "Does the project run tests in CI, e.g. GitHub Actions, Prow?",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -2867,7 +2609,7 @@
         "x": 6,
         "y": 21
       },
-      "id": 36,
+      "id": 38,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -2890,7 +2632,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.frozen-deps' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.ci-tests' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -2914,11 +2656,12 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Frozen Deps",
+      "title": "CI Tests",
       "type": "stat"
     },
     {
       "datasource": null,
+      "description": "Does the project require code review before code is merged?",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -2964,204 +2707,6 @@
         "h": 2,
         "w": 3,
         "x": 9,
-        "y": 21
-      },
-      "id": 37,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "first"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.pull-requests' and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Pull Requests",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "0"
-            },
-            {
-              "from": "",
-              "id": 4,
-              "text": "✘",
-              "to": "",
-              "type": 1,
-              "value": "1"
-            }
-          ],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-green",
-                "value": 0
-              },
-              {
-                "color": "dark-red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 12,
-        "y": 21
-      },
-      "id": 42,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "first"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "7.5.5",
-      "targets": [
-        {
-          "format": "table",
-          "group": [],
-          "metricColumn": "none",
-          "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.sast' and\n  p.package_url = '${PackageURL}'\n",
-          "refId": "A",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "column"
-              }
-            ]
-          ],
-          "timeColumn": "time",
-          "where": [
-            {
-              "name": "$__timeFilter",
-              "params": [],
-              "type": "macro"
-            }
-          ]
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "SAST",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [
-            {
-              "from": "",
-              "id": 1,
-              "text": "✓",
-              "to": "",
-              "type": 1,
-              "value": "0"
-            },
-            {
-              "from": "",
-              "id": 4,
-              "text": "✘",
-              "to": "",
-              "type": 1,
-              "value": "1"
-            }
-          ],
-          "noValue": "?",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-yellow",
-                "value": null
-              },
-              {
-                "color": "dark-green",
-                "value": 0
-              },
-              {
-                "color": "dark-red",
-                "value": 1
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 2,
-        "w": 3,
-        "x": 15,
         "y": 21
       },
       "id": 41,
@@ -3216,7 +2761,207 @@
     },
     {
       "datasource": null,
-      "description": "",
+      "description": "Does the project have contributors from at least two different organizations?",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "from": "",
+              "id": 1,
+              "text": "✓",
+              "to": "",
+              "type": 1,
+              "value": "0"
+            },
+            {
+              "from": "",
+              "id": 4,
+              "text": "✘",
+              "to": "",
+              "type": 1,
+              "value": "1"
+            }
+          ],
+          "noValue": "?",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 12,
+        "y": 21
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "first"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.contributors' and\n  p.package_url = '${PackageURL}'\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Multiple Orgs. Contributing",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "Does the project declare and freeze dependencies?",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "from": "",
+              "id": 1,
+              "text": "✓",
+              "to": "",
+              "type": 1,
+              "value": "0"
+            },
+            {
+              "from": "",
+              "id": 4,
+              "text": "✘",
+              "to": "",
+              "type": 1,
+              "value": "1"
+            }
+          ],
+          "noValue": "?",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 15,
+        "y": 21
+      },
+      "id": 36,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "first"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.frozen-deps' and\n  p.package_url = '${PackageURL}'\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Frozen Deps",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "Does the project use fuzzing tools, e.g. OSS-Fuzz?",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3264,7 +3009,7 @@
         "x": 18,
         "y": 21
       },
-      "id": 34,
+      "id": 43,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -3287,7 +3032,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.security-policy' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.fuzzing' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -3311,7 +3056,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "SECURITY.md",
+      "title": "Fuzzing",
       "type": "stat"
     },
     {
@@ -3399,6 +3144,7 @@
     },
     {
       "datasource": null,
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3446,7 +3192,7 @@
         "x": 3,
         "y": 23
       },
-      "id": 33,
+      "id": 93,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -3469,7 +3215,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.cii-best-practices' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.packaging' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -3493,11 +3239,12 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "CII Best Practices",
+      "title": "Packaging",
       "type": "stat"
     },
     {
       "datasource": null,
+      "description": "Does the project use Pull Requests for all code changes?",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3545,7 +3292,7 @@
         "x": 6,
         "y": 23
       },
-      "id": 35,
+      "id": 37,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -3568,7 +3315,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.contributors' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.pull-requests' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -3592,11 +3339,12 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Contributors",
+      "title": "Pull Requests",
       "type": "stat"
     },
     {
       "datasource": null,
+      "description": "Does the project use static code analysis tools, e.g. CodeQL, SonarCloud?",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3644,7 +3392,7 @@
         "x": 9,
         "y": 23
       },
-      "id": 38,
+      "id": 42,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -3667,7 +3415,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.ci-tests' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.sast' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -3691,11 +3439,12 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "CI Tests",
+      "title": "SAST",
       "type": "stat"
     },
     {
       "datasource": null,
+      "description": "Does the project contain a security policy?",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3743,7 +3492,7 @@
         "x": 12,
         "y": 23
       },
-      "id": 43,
+      "id": 34,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -3766,7 +3515,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.fuzzing' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.security-policy' and\n  p.package_url = '${PackageURL}'\n",
           "refId": "A",
           "select": [
             [
@@ -3790,11 +3539,12 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Fuzzing",
+      "title": "SECURITY.md",
       "type": "stat"
     },
     {
       "datasource": null,
+      "description": "Does the project cryptographically sign releases?",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3840,6 +3590,106 @@
         "h": 2,
         "w": 3,
         "x": 15,
+        "y": 23
+      },
+      "id": 39,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "first"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "7.5.5",
+      "targets": [
+        {
+          "format": "table",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.signed-releases' and\n  p.package_url = '${PackageURL}'\n",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "timeColumn": "time",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Signed Releases",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "Does the project cryptographically sign release tags?",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "from": "",
+              "id": 1,
+              "text": "✓",
+              "to": "",
+              "type": 1,
+              "value": "0"
+            },
+            {
+              "from": "",
+              "id": 4,
+              "text": "✘",
+              "to": "",
+              "type": 1,
+              "value": "1"
+            }
+          ],
+          "noValue": "?",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-yellow",
+                "value": null
+              },
+              {
+                "color": "dark-green",
+                "value": 0
+              },
+              {
+                "color": "dark-red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 3,
+        "x": 18,
         "y": 23
       },
       "id": 40,
@@ -3893,7 +3743,22 @@
       "type": "stat"
     },
     {
+      "collapsed": false,
       "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 86,
+      "panels": [],
+      "title": "Other Metrics",
+      "type": "row"
+    },
+    {
+      "datasource": null,
+      "description": "✓ → no severe reviews\n\n✘ → at least one severe review\n\n? → no reviews",
       "fieldConfig": {
         "defaults": {
           "mappings": [
@@ -3907,7 +3772,7 @@
             },
             {
               "from": "",
-              "id": 4,
+              "id": 2,
               "text": "✘",
               "to": "",
               "type": 1,
@@ -3938,10 +3803,10 @@
       "gridPos": {
         "h": 2,
         "w": 3,
-        "x": 18,
-        "y": 23
+        "x": 0,
+        "y": 26
       },
-      "id": 39,
+      "id": 77,
       "options": {
         "colorMode": "background",
         "graphMode": "area",
@@ -3949,7 +3814,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "first"
+            "mean"
           ],
           "fields": "",
           "values": false
@@ -3964,7 +3829,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "SELECT\n  CASE value\n    WHEN 'true' THEN 0\n    WHEN 'false' THEN 1\n  END AS metric\nFROM\n  metric m left join package p on m.package_id = p.id\nWHERE\n  m.key = 'openssf.scorecard.raw.signed-releases' and\n  p.package_url = '${PackageURL}'\n",
+          "rawSql": "WITH reviews as (\n  SELECT m.properties->>'Issues-Identified' AS issues_identified\n  FROM package p left join metric m on p.id = m.package_id\n  WHERE p.package_url = '${PackageURL}' and m.key = 'openssf.security-review'\n)\nSELECT \n  CASE\n    WHEN EXISTS (select * from reviews where issues_identified = 'Severe') THEN 1\n    WHEN EXISTS (select * from reviews where issues_identified != 'Severe') THEN 0\n  END AS value",
           "refId": "A",
           "select": [
             [
@@ -3988,7 +3853,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Signed Releases",
+      "title": "Security Reviews",
       "type": "stat"
     }
   ],
@@ -4002,8 +3867,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "github/kubernetes/kubernetes",
-          "value": "github/kubernetes/kubernetes"
+          "text": "github/curl/curl",
+          "value": "github/curl/curl"
         },
         "datasource": null,
         "definition": "SELECT SUBSTRING(purls.package_url, 5, LENGTH(purls.package_url)-4) as package_url\nFROM\n(select distinct p.id, package_url FROM package p) as purls\nleft join\n(select p.id, m.value from package p left join metric m on p.id = m.package_id where m.key like 'openssf.criticality.raw.stars') as stars\non purls.id = stars.id\nORDER BY CASE when stars.value is null then 1 else 0 end, CAST (stars.value as INT) desc",
@@ -4030,8 +3895,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "pkg:github/kubernetes/kubernetes",
-          "value": "pkg:github/kubernetes/kubernetes"
+          "text": "pkg:github/curl/curl",
+          "value": "pkg:github/curl/curl"
         },
         "datasource": null,
         "definition": "SELECT package_url FROM package WHERE package_url like '%${PackagePath}'",
@@ -4064,5 +3929,5 @@
   "timezone": "",
   "title": "OpenSSF Security Metrics",
   "uid": "OA7q6ArMz",
-  "version": 186
+  "version": 206
 }
