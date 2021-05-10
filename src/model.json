@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1620605426187,
+  "iteration": 1620677858534,
   "links": [
     {
       "icon": "cloud",
@@ -415,7 +415,7 @@
     },
     {
       "datasource": null,
-      "description": "Overall Criticality Score (Calculated)\n",
+      "description": "OpenSSF Criticality Score\n",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -459,8 +459,9 @@
       "id": 10,
       "links": [
         {
-          "title": "OpenSSF Homepage",
-          "url": "https://openssf.org"
+          "targetBlank": true,
+          "title": "(View README)",
+          "url": "https://github.com/ossf/criticality_score#readme"
         }
       ],
       "options": {
@@ -1172,20 +1173,14 @@
     },
     {
       "datasource": null,
-      "description": "",
+      "description": "OpenSSF Best Practices Assessment",
       "fieldConfig": {
         "defaults": {
           "color": {
             "fixedColor": "rgba(0, 0, 0, 0.82)",
             "mode": "thresholds"
           },
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "View Project Details",
-              "url": "${__data.fields.value}"
-            }
-          ],
+          "links": [],
           "mappings": [
             {
               "from": "",
@@ -1260,8 +1255,8 @@
       "links": [
         {
           "targetBlank": true,
-          "title": "Criteria",
-          "url": "https://bestpractices.coreinfrastructure.org/en/criteria"
+          "title": "(View Example)",
+          "url": "https://bestpractices.coreinfrastructure.org/en/projects/1"
         }
       ],
       "options": {
@@ -2350,7 +2345,7 @@
     },
     {
       "datasource": null,
-      "description": "",
+      "description": "OpenSSF Scorecard",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -2406,8 +2401,8 @@
       "links": [
         {
           "targetBlank": true,
-          "title": "Criteria",
-          "url": "https://bestpractices.coreinfrastructure.org/en/criteria"
+          "title": "(View README)",
+          "url": "https://github.com/ossf/scorecard#readme"
         }
       ],
       "options": {
@@ -3867,8 +3862,8 @@
         "allValue": null,
         "current": {
           "selected": true,
-          "text": "github/curl/curl",
-          "value": "github/curl/curl"
+          "text": "github/coreinfrastructure/best-practices-badge",
+          "value": "github/coreinfrastructure/best-practices-badge"
         },
         "datasource": null,
         "definition": "SELECT SUBSTRING(purls.package_url, 5, LENGTH(purls.package_url)-4) as package_url\nFROM\n(select distinct p.id, package_url FROM package p) as purls\nleft join\n(select p.id, m.value from package p left join metric m on p.id = m.package_id where m.key like 'openssf.criticality.raw.stars') as stars\non purls.id = stars.id\nORDER BY CASE when stars.value is null then 1 else 0 end, CAST (stars.value as INT) desc",
@@ -3895,8 +3890,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "pkg:github/curl/curl",
-          "value": "pkg:github/curl/curl"
+          "text": "pkg:github/coreinfrastructure/best-practices-badge",
+          "value": "pkg:github/coreinfrastructure/best-practices-badge"
         },
         "datasource": null,
         "definition": "SELECT package_url FROM package WHERE package_url like '%${PackagePath}'",
@@ -3929,5 +3924,5 @@
   "timezone": "",
   "title": "OpenSSF Security Metrics",
   "uid": "OA7q6ArMz",
-  "version": 206
+  "version": 210
 }
