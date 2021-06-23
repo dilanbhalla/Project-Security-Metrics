@@ -16,6 +16,7 @@ from dateutil.parser import parse
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from packageurl.contrib import purl2url, url2purl
+from bs4 import BeautifulSoup
 
 
 class Command(BaseCommand):
@@ -42,23 +43,32 @@ class Command(BaseCommand):
             content = StringIO(res.text)
             reader = csv.DictReader(content, delimiter=",")
             for row in reader:
-                package_url = url2purl.url2purl(row.get("url"))
+                repo_url = row.get("url")
+                package_url = url2purl.url2purl(repo_url)
                 if not package_url:
                     logging.warning(
-                        "Unable to identify Package URL from repository: [%s]", row.get("url")
+                        "Unable to identify Package URL from repository: [%s]", repo_url
                     )
                     continue
 
                 package, _ = Package.objects.get_or_create(package_url=str(package_url))
 
                 with transaction.atomic():
+
                     Metric.objects.filter(
                         package=package, key__startswith="openssf.criticality.raw."
                     ).delete()
 
-                    for key, value in row.items():
-                        # if key in ["name", "url"]:
-                        #     continue
+                    repo = requests.get(repo_url, timeout=120)
+                    if repo.status_code != 200:
+                        logging.warning("Failure fetching repo: %s", repo.status_code)
+                    else:
+                        soup = BeautifulSoup(repo.content, features="html.parser")
+                        watchers = soup.find('a', {'class':'social-count'})
+                        about = soup.find('p', {'class':'f4 mt-3'})
+                        watchers_text, about_text = watchers.text, about.text
+
+                    def save_metric(package_url, key, value):
                         try:
                             metric, _ = Metric.objects.get_or_create(
                                 package=package, key=f"openssf.criticality.raw.{key}"
@@ -69,6 +79,12 @@ class Command(BaseCommand):
                             logging.warning(
                                 "Failed to save data (%s, %s): %s", package_url, key, msg
                             )
+
+                    save_metric(package_url, 'watchers', watchers_text)
+                    save_metric(package_url, 'watchers', about_text)
+                    for key, value in row.items():
+                        save_metric(package_url, key, value)
+
         except Exception as msg:
             traceback.print_exc()
             logging.warn("Error: %s", msg)
