@@ -64,9 +64,15 @@ class Command(BaseCommand):
                         logging.warning("Failure fetching repo: %s", repo.status_code)
                     else:
                         soup = BeautifulSoup(repo.content, features="html.parser")
-                        watchers = soup.find('a', {'class':'social-count'})
-                        about = soup.find('p', {'class':'f4 mt-3'})
-                        watchers_text, about_text = watchers.text, about.text
+                        watchers = soup.find('a', {'class':'social-count'}) #watchers
+                        about = soup.find('p', {'class':'f4 mt-3'}) #about/summary
+                        watchers_text, about_text = '', ''
+                        if watchers:
+                            watchers_text = watchers.text
+                            if "k" in watchers_text:
+                                watchers_text = float(watchers_text.split("k")[0]) * 1000
+                        if about:
+                            about_text = about.text
 
                     def save_metric(package_url, key, value):
                         try:
@@ -81,7 +87,7 @@ class Command(BaseCommand):
                             )
 
                     save_metric(package_url, 'watchers', watchers_text)
-                    save_metric(package_url, 'watchers', about_text)
+                    save_metric(package_url, 'about', about_text)
                     for key, value in row.items():
                         save_metric(package_url, key, value)
 
